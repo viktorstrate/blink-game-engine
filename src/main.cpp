@@ -8,27 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
-
-const char *vertexShaderSource = "#version 330 core\n"
-                                 "layout (location = 0) in vec3 aPos;\n"
-                                 "layout (location = 1) in vec3 aColor;\n"
-                                 "\n"
-                                 "out vec4 ourColor;\n"
-                                 "\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "   ourColor = vec4(aColor, 1.0);\n"
-                                 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                 "}\n";
-const char *fragmentShaderSource = "#version 330 core\n"
-                                   "out vec4 FragColor;\n"
-                                   "\n"
-                                   "in vec4 ourColor;\n"
-                                   "\n"
-                                   "void main()\n"
-                                   "{\n"
-                                   "   FragColor = ourColor;\n"
-                                   "}\n";
+#include "Shader.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -41,17 +21,7 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 }
 
-void validateShader(unsigned int shader, const std::string& name) {
-    int  success;
-    char infoLog[512];
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
-    glGetShaderInfoLog(shader, 512, NULL, infoLog);
-
-    if (!success) {
-        std::cout << "Shader compile error: " << name << " - " << infoLog;
-    }
-}
 
 int main(int argc, char** argv) {
     glfwInit();
@@ -80,25 +50,8 @@ int main(int argc, char** argv) {
     // Window resize callback
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    validateShader(vertexShader, "Vertex Shader");
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    validateShader(vertexShader, "Fragment Shader");
-
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    Shader program = Shader("assets/shader.glsl");
+    program.use();
 
     float vertices[] = {
             0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // top right
@@ -147,7 +100,7 @@ int main(int argc, char** argv) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
+        program.use();
 
 //        float timeValue = glfwGetTime();
 //        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
