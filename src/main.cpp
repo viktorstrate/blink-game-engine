@@ -5,10 +5,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 #include <vector>
 #include <math.h>
 #include <stb_image.h>
+
 #include "Shader.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -131,10 +136,17 @@ int main(int argc, char** argv) {
 
         program.use();
 
-//        float timeValue = glfwGetTime();
-//        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-//        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-//        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+        glm::mat4 trans1 = glm::mat4(1);
+        trans1 = glm::translate(trans1, glm::vec3(-0.5f, 0.5f, 0));
+        trans1 = glm::rotate(trans1, glm::radians((float)glfwGetTime()*60), glm::vec3(0, 0, 1));
+        trans1 = glm::scale(trans1, glm::vec3(0.5f));
+
+        glm::mat4 trans2 = glm::mat4(1);
+        trans2 = glm::translate(trans2, glm::vec3(0.5f, -0.5f, 0));
+        trans2 = glm::rotate(trans2, glm::radians((float)glfwGetTime()*60), glm::vec3(0, 0, 1));
+        trans2 = glm::scale(trans2, glm::vec3(0.5f));
+
+        int transformLoc = glGetUniformLocation(program.ID, "transform");
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -144,6 +156,11 @@ int main(int argc, char** argv) {
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
+
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans1));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans2));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
