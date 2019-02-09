@@ -1,20 +1,21 @@
-cmake_minimum_required (VERSION 3.9)
+cmake_minimum_required(VERSION 3.9)
 
-project (learnopengl)
+project(learnopengl)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.2 REQUIRED)
 
-set(SRCS src/main.cpp src/main.cpp)
+set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp)
 
-set(VENDOR_SRCS vendor/src/glad.c src/Shader.cpp src/Shader.h)
+set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h)
 
 add_executable(${PROJECT_NAME} ${SRCS} ${VENDOR_SRCS})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(
+        ${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
-        )
+)
 
 include_directories(src/)
 include_directories(vendor/includes)

@@ -56,8 +56,6 @@ Shader::Shader(const char* shaderPath) {
 
     unsigned int vertex, fragment;
 
-    std::cout << "Fragment: " << shaders.fragment << "Vertex: " << shaders.vertex << std::endl;
-
     // Vertex shader
     vertex = glCreateShader(GL_VERTEX_SHADER);
     const char* vertexSource = shaders.vertex.c_str();
