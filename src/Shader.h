@@ -34,6 +34,9 @@ public:
 
     void setMat4(const std::string &name, glm::mat4& matrix);
 
+    void setVec2(const std::string &name, float x, float y);
+    void setVec3(const std::string &name, float x, float y, float z);
+
 private:
     ShaderSource parseShader(const char* shaderPath);
 
