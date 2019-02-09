@@ -5,7 +5,7 @@ project(learnopengl)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.2 REQUIRED)
 
-set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp)
+set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp src/Camera.cpp src/Camera.h)
 
 set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h)
 
