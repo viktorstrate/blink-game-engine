@@ -4,8 +4,14 @@ project(learnopengl)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.2 REQUIRED)
+#find_package(assimp REQUIRED)
 
-set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp src/Camera.cpp src/Camera.h)
+find_library(
+        assimp_LIBRARIES
+        NAMES assimp
+)
+
+set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp src/Camera.cpp src/Camera.h src/Mesh.cpp src/Mesh.h src/Model.cpp src/Model.h)
 
 set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h)
 
@@ -21,9 +27,14 @@ include_directories(src/)
 include_directories(vendor/includes)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC ${OPENGL_gl_LIBRARY})
+link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC glfw)
+target_link_libraries(${PROJECT_NAME} glfw)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${ASSIMP_INCLUDE_DIRS})
+#link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
+
+target_link_libraries(${PROJECT_NAME} ${assimp_LIBRARIES})
 
 add_custom_target(
         copy_assets

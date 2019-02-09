@@ -49,7 +49,7 @@ static void validateShader(unsigned int shader, const std::string& name) {
     glGetShaderInfoLog(shader, 512, NULL, infoLog);
 
     if (!success) {
-        std::cout << "Shader compile error: " << name << " - " << infoLog;
+        std::cout << "ERROR::SHADER::COMPILE (" << name << "): " << infoLog << std::endl;
     }
 }
 
@@ -87,7 +87,7 @@ Shader::Shader(const char* shaderPath) {
         if(!success)
         {
             glGetProgramInfoLog(ID, 512, NULL, infoLog);
-            std::cout << "Shader linking failed: " << infoLog << std::endl;
+            std::cout << "ERROR::SHADER::LINK (" << shaderPath << "): " << infoLog << std::endl;
         }
     }
 
