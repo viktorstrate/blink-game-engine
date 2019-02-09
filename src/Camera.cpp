@@ -36,18 +36,18 @@ glm::mat4 Camera::GetViewMatrix() {
     return glm::lookAt(Position, Position + Front, Up);
 }
 
-void Camera::ProcessKeyboard(float forwards, float sideways, float deltaTime) {
+void Camera::ProcessKeyboard(float forwards, float sideways, float up, float deltaTime) {
 
-    glm::vec2 direction = glm::vec2(forwards, sideways);
+    glm::vec3 direction = glm::vec3(forwards, sideways, up);
 
-    if (direction.x == 0 && direction.y == 0)
+    if (direction.x == 0 && direction.y == 0 && direction.z == 0)
         return;
 
     float velocity = MovementSpeed * deltaTime;
 
     direction = glm::normalize(direction) * velocity;
 
-    Position += -direction.x * Front + direction.y * Right;
+    Position += -direction.x * Front + direction.y * Right + direction.z * WorldUp;
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch) {

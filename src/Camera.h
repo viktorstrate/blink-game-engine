@@ -45,7 +45,7 @@ public:
 
     glm::mat4 GetViewMatrix();
 
-    void ProcessKeyboard(float forwards, float sideways, float deltaTime);
+    void ProcessKeyboard(float forwards, float sideways, float up, float deltaTime);
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessMouseScroll(float yoffset);
 
