@@ -2,7 +2,7 @@
 // Created by Viktor Hundahl Strate on 2019-02-03.
 //
 
-#include <glad/glad.h>
+#include "Rendering.h"
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
@@ -18,6 +18,8 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include "VertexBuffer.h"
+#include "VertexArray.h"
 
 int screenWidth, screenHeight;
 
@@ -145,49 +147,61 @@ int main(int argc, char** argv) {
     program.setInt("texture2", 1);
 
     // Verticies that make up a cube
-    float vertices[] = {
-            // positions          // normals           // texture coords
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+    float cubeVertices[] = {
+            // Back face
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, // Bottom-left
+             0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 1.0f, // top-right
+             0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, // bottom-right
+             0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 1.0f, // top-right
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, // bottom-left
+            -0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f, // top-left
+            // Front face
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+             0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  1.0f, 0.0f, // bottom-right
+             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  1.0f, 1.0f, // top-right
+             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  1.0f, 1.0f, // top-right
+            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  0.0f, 1.0f, // top-left
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+            // Left face
+            -0.5f,  0.5f,  0.5f,  -1.0f, 0.0f, 0.0f,  1.0f, 0.0f, // top-right
+            -0.5f,  0.5f, -0.5f,  -1.0f, 0.0f, 0.0f,  1.0f, 1.0f, // top-left
+            -0.5f, -0.5f, -0.5f,  -1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // bottom-left
+            -0.5f, -0.5f, -0.5f,  -1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // bottom-left
+            -0.5f, -0.5f,  0.5f,  -1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // bottom-right
+            -0.5f,  0.5f,  0.5f,  -1.0f, 0.0f, 0.0f,  1.0f, 0.0f, // top-right
+            // Right face
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f, // top-left
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // bottom-right
+            0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f, // top-right
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // bottom-right
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f, // top-left
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // bottom-left
+            // Bottom face
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f, 0.0f,  0.0f, 1.0f, // top-right
+             0.5f, -0.5f, -0.5f,  0.0f, -1.0f, 0.0f,  1.0f, 1.0f, // top-left
+             0.5f, -0.5f,  0.5f,  0.0f, -1.0f, 0.0f,  1.0f, 0.0f, // bottom-left
+             0.5f, -0.5f,  0.5f,  0.0f, -1.0f, 0.0f,  1.0f, 0.0f, // bottom-left
+            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f, 0.0f,  0.0f, 0.0f, // bottom-right
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f, 0.0f,  0.0f, 1.0f, // top-right
+            // Top face
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f, // top-left
+             0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, // bottom-right
+             0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f, // top-right
+             0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, // bottom-right
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f, // top-left
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f  // bottom-left
+    };
 
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+    float screenQuadVertices[] = {
+            // Top left
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 0.0f, 1.0f,
 
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+            // Bottom right
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
     };
 
     unsigned int diffuseTexture = loadTexture("assets/textures/container2.png");
@@ -195,57 +209,98 @@ int main(int argc, char** argv) {
 
     Shader lampShader("assets/shaders/lamp.glsl");
     Shader lightingShader("assets/shaders/color-light.glsl");
+    Shader screenShader("assets/shaders/screen-texture.glsl");
+
+    screenShader.use();
+    screenShader.setInt("textureId", 0);
 
     lightingShader.use();
-
     lightingShader.setInt("material.diffuse", 0);
     lightingShader.setInt("material.specular", 1);
 
-    unsigned int VBO;
+    VertexArray quadVAO;
+    VertexBuffer quadVBO(screenQuadVertices, sizeof(screenQuadVertices), 4*sizeof(float));
 
-    // Setup the vertex buffer
-    glGenBuffers(1, &VBO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    VertexAttribute quadAttrs[] = {
+            VertexAttribute(2, GL_FLOAT, 0),
+            VertexAttribute(2, GL_FLOAT, 2*sizeof(float))
+    };
 
-    unsigned int lampVAO, cubeVAO;
+    quadVAO.addBuffer(quadVBO, quadAttrs, 2);
 
-    // Setup lamp vertex array
-    glGenVertexArrays(1, &lampVAO);
-    glBindVertexArray(lampVAO);
+    VertexArray lampVAO;
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*) 0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*) (3*sizeof(float)));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*) (6*sizeof(float)));
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+    VertexBuffer VBO(cubeVertices, sizeof(cubeVertices), 8*sizeof(float));
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    VertexAttribute attributes[] {
+            VertexAttribute(3, GL_FLOAT, 0),
+            VertexAttribute(3, GL_FLOAT, 3*sizeof(float)),
+            VertexAttribute(3, GL_FLOAT, 6*sizeof(float))
+    };
+
+    lampVAO.addBuffer(VBO, attributes, 3);
 
     // Setup cube vertex array
-    glGenVertexArrays(1, &cubeVAO);
-    glBindVertexArray(cubeVAO);
-
-    // Reuse the same vertex buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    VertexArray cubeVAO;
+    cubeVAO.addBuffer(VBO, attributes, 3);
 
     // Unbind vertex buffer and vertex array
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    unsigned int FBO;
+
+    glGenFramebuffers(1, &FBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+    // generate texture
+    unsigned int texColorBuffer;
+    glGenTextures(1, &texColorBuffer);
+    glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, screenWidth, screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // attach it to currently bound framebuffer object
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+
+    unsigned int RBO;
+    glGenRenderbuffers(1, &RBO);
+    glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, screenWidth, screenHeight);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER Framebuffer is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     // Wireframe mode
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    int frameCount = 0;
+    float fpsTime = 0;
 
     while (!glfwWindowShouldClose(window)) {
+
+        frameCount++;
 
         float currentFrame = (float) glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+        fpsTime += deltaTime;
+
+        if (frameCount % 100 == 0) {
+            glfwSetWindowTitle(window, std::string("LearnOpenGl - FPS: " + std::to_string((int)(1.0f/(fpsTime/100.0f)))).c_str());
+            fpsTime = 0;
+        }
 
         processInput(window);
 
@@ -254,21 +309,16 @@ int main(int argc, char** argv) {
         glm::mat4 projection;
         projection = glm::perspective(glm::radians(camera.FOV), (float) screenWidth/(float) screenHeight, 0.1f, 100.0f);
 
+        glBindFramebuffer(GL_FRAMEBUFFER, FBO);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
 
         // Draw lamp
         lampShader.use();
 
         lampShader.setMat4("view", view);
         lampShader.setMat4("projection", projection);
-
-//        float lampX = cosf(glfwGetTime()) * 2.0f;
-//        float lampZ = sinf(glfwGetTime()) * 2.0f;
-//        float lampX = 3;
-//        float lampZ = 3;
-
-//        glm::vec3 lightPos = glm::vec3(lampX, 2.0f, lampZ);
 
         for(int i = 0; i < 4; i++) {
 
@@ -279,7 +329,7 @@ int main(int argc, char** argv) {
 
             lampShader.setMat4("model", model);
 
-            glBindVertexArray(lampVAO);
+            lampVAO.use();
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
@@ -326,7 +376,7 @@ int main(int argc, char** argv) {
         lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.0f)));
         lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
-        glBindVertexArray(lampVAO);
+        lampVAO.use();
 
         for(unsigned int i = 0; i < 10; i++)
         {
@@ -346,13 +396,20 @@ int main(int argc, char** argv) {
 
         character.Draw(lightingShader);
 
+        // Draw framebuffer texture to quad
+        glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        screenShader.use();
+        quadVAO.use();
+        glDisable(GL_DEPTH_TEST);
+        glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
-    glDeleteVertexArrays(1, &lampVAO);
-    glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteBuffers(1, &VBO);
 
     glfwTerminate();
     return 0;

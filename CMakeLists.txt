@@ -11,9 +11,9 @@ find_library(
         NAMES assimp
 )
 
-set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp src/Camera.cpp src/Camera.h src/Mesh.cpp src/Mesh.h src/Model.cpp src/Model.h)
+set(SRCS src/main.cpp src/main.cpp src/Shader.cpp src/Shader.h src/stb_image_setup.cpp src/Camera.cpp src/Camera.h src/Mesh.cpp src/Mesh.h src/Model.cpp src/Model.h src/VertexArray.cpp src/VertexArray.h src/Rendering.h src/Rendering.cpp)
 
-set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h)
+set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h src/VertexBuffer.cpp src/VertexBuffer.h)
 
 add_executable(${PROJECT_NAME} ${SRCS} ${VENDOR_SRCS})
 
