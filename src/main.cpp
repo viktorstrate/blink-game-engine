@@ -28,7 +28,7 @@ Camera camera = Camera(glm::vec3(0, 0, 5));
 bool firstMouse = true;
 float lastMouseX = 0, lastMouseY = 0;
 
-float deltaTime = 0.0f;    // Time between current frame and last frame
+float deltaTime = 0.0f; // Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -103,8 +103,6 @@ glm::vec3 pointLightPositions[] = {
         glm::vec3( 0.0f,  0.0f, -3.0f)
 };
 
-unsigned int loadTexture(char const * path);
-
 int main(int argc, char** argv) {
 
     screenWidth = 800;
@@ -117,6 +115,7 @@ int main(int argc, char** argv) {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
+    glfwWindowHint(GLFW_SAMPLES, 4); // Anti aliasing
 
     GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
     if (window == NULL) {
@@ -140,8 +139,6 @@ int main(int argc, char** argv) {
 
     Shader program = Shader("assets/shaders/textured-flat.glsl");
     program.use();
-
-    Model character = Model("assets/models/nanosuit/nanosuit.obj");
 
     program.setInt("texture1", 0);
     program.setInt("texture2", 1);
@@ -204,8 +201,10 @@ int main(int argc, char** argv) {
             1.0f, 1.0f, 1.0f, 1.0f,
     };
 
-    unsigned int diffuseTexture = loadTexture("assets/textures/container2.png");
-    unsigned int specularTexture = loadTexture("assets/textures/container2_specular.png");
+    Texture diffuseTexture = Texture("assets/textures/container2.png");
+    Texture specularTexture = Texture("assets/textures/container2_specular.png");
+
+    Model character = Model("assets/models/nanosuit/nanosuit.obj");
 
     Shader lampShader("assets/shaders/lamp.glsl");
     Shader lightingShader("assets/shaders/color-light.glsl");
@@ -255,18 +254,11 @@ int main(int argc, char** argv) {
     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
     // generate texture
-    unsigned int texColorBuffer;
-    glGenTextures(1, &texColorBuffer);
-    glBindTexture(GL_TEXTURE_2D, texColorBuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, screenWidth, screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    Texture texColorBuffer(screenWidth, screenHeight, GL_RGB);
+    texColorBuffer.setWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
     // attach it to currently bound framebuffer object
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer.ID, 0);
 
     unsigned int RBO;
     glGenRenderbuffers(1, &RBO);
@@ -284,6 +276,7 @@ int main(int argc, char** argv) {
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glEnable(GL_CULL_FACE);
+    glEnable(GL_MULTISAMPLE);
 
     int frameCount = 0;
     float fpsTime = 0;
@@ -340,11 +333,8 @@ int main(int argc, char** argv) {
         lightingShader.setMat4("projection", projection);
         lightingShader.setVec3("viewPos", camera.Position);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseTexture);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularTexture);
+        diffuseTexture.use(0);
+        specularTexture.use(1);
 
         lightingShader.setFloat("material.shininess", 48.0f);
 
@@ -390,6 +380,7 @@ int main(int argc, char** argv) {
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
+        // Draw character
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.1f));
         lightingShader.setMat4("model", model);
@@ -404,7 +395,7 @@ int main(int argc, char** argv) {
         screenShader.use();
         quadVAO.use();
         glDisable(GL_DEPTH_TEST);
-        glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+        texColorBuffer.use(0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);

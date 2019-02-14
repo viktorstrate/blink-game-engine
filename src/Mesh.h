@@ -9,6 +9,7 @@
 #include <string>
 
 #include "Shader.h"
+#include "Texture.h"
 
 struct Vertex {
     glm::vec3 Position;
@@ -16,25 +17,25 @@ struct Vertex {
     glm::vec2 TexCoords;
 };
 
-struct Texture {
-    unsigned int id;
+struct MeshTexture {
+    Texture* texture;
     std::string type;
     std::string path;
 };
 
 class Mesh {
 public:
-    /*  Mesh Data  */
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
-    /*  Functions  */
-    Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> &textures);
+    std::vector<MeshTexture> textures;
+
+    Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<MeshTexture> &textures);
+
     void Draw(Shader shader);
+
 private:
-    /*  Render data  */
     unsigned int VAO, VBO, EBO;
-    /*  Functions    */
+
     void setupMesh();
 };
 
