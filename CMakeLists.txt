@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-project(learnopengl)
+project(blink)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.2 REQUIRED)
@@ -10,29 +10,36 @@ find_library(
         NAMES assimp
 )
 
-set(
-    SRCS
-        src/main.cpp
-        src/Shader.cpp
-        src/Shader.h
-        src/stb_image_setup.cpp
-        src/Camera.cpp
-        src/Camera.h
-        src/Mesh.cpp
-        src/Mesh.h
-        src/Model.cpp
-        src/Model.h
-        src/VertexArray.cpp
-        src/VertexArray.h
-        src/Rendering.h
-        src/Rendering.cpp
-        src/Texture.cpp
-        src/Texture.h
-)
-
 set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h src/VertexBuffer.cpp src/VertexBuffer.h)
 
-add_executable(${PROJECT_NAME} ${SRCS} ${VENDOR_SRCS})
+set(
+    SOURCES
+        src/Game.cpp
+        src/main.cpp
+        src/Shader.cpp
+        src/stb_image_setup.cpp
+        src/Camera.cpp
+        src/Mesh.cpp
+        src/Model.cpp
+        src/VertexArray.cpp
+        src/Rendering.cpp
+        src/Texture.cpp
+)
+
+set(
+    HEADERS
+        src/Game.h
+        src/Camera.h
+        src/Shader.h
+        src/Mesh.h
+        src/Model.h
+        src/Rendering.h
+        src/Texture.h
+        src/VertexArray.h
+        src/VertexBuffer.h
+)
+
+add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${VENDOR_SRCS})
 
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES
@@ -52,13 +59,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${ASSIMP_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME} ${assimp_LIBRARIES})
 
-add_custom_target(
-        copy_assets
-        ${CMAKE_COMMAND}
-        -D SOURCE_DIR=${CMAKE_SOURCE_DIR}
-        -D DESTINATION_DIR=${CMAKE_BINARY_DIR}
-        -P ${CMAKE_SOURCE_DIR}/CopyAssets.cmake
-        COMMENT "Copying Files for target: ${PROJECT_NAME}" VERBATIM
-)
-
-add_dependencies(${PROJECT_NAME} copy_assets)
+set(BLINK_LIBRARIES blink PARENT_SCOPE)
+set(BLINK_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/src/ ${CMAKE_CURRENT_LIST_DIR}/vendor/includes/ PARENT_SCOPE)
