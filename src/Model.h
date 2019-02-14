@@ -15,7 +15,8 @@
 #include "Shader.h"
 #include "Mesh.h"
 
-class Model {
+class Model
+{
 public:
     Model(char* path);
 
@@ -35,6 +36,6 @@ private:
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 
     std::vector<MeshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
-                                               std::string typeName);
+                                                  std::string typeName);
 };
 

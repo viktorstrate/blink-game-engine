@@ -9,10 +9,12 @@
 #include <glm/matrix.hpp>
 #include <string>
 
-class Shader {
+class Shader
+{
 public:
 
-    struct ShaderSource {
+    struct ShaderSource
+    {
         std::string vertex, fragment;
     };
 
@@ -32,12 +34,14 @@ public:
 
     void setFloat(const std::string &name, float value) const;
 
-    void setMat4(const std::string &name, glm::mat4& matrix);
+    void setMat4(const std::string &name, glm::mat4 &matrix);
 
     void setVec2(const std::string &name, float x, float y);
+
     void setVec2(const std::string &name, glm::vec2 vector);
 
     void setVec3(const std::string &name, float x, float y, float z);
+
     void setVec3(const std::string &name, glm::vec3 vector);
 
 private:

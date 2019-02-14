@@ -12,7 +12,8 @@
 
 #include <vector>
 
-enum Camera_Movement {
+enum Camera_Movement
+{
     FORWARD,
     BACKWARD,
     LEFT,
@@ -25,7 +26,8 @@ const float CAMERA_DEFAULT_SPEED = 3.5f;
 const float CAMERA_DEFAULT_SENSITIVITY = 0.1f;
 const float CAMERA_DEFAULT_FOV = 45.0f;
 
-class Camera {
+class Camera
+{
 public:
     glm::vec3 Position;
     glm::vec3 Front;
@@ -41,12 +43,14 @@ public:
     float FOV;
 
     explicit Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
-           float yaw = CAMERA_DEFAULT_YAW, float pitch = CAMERA_DEFAULT_PITCH);
+                    float yaw = CAMERA_DEFAULT_YAW, float pitch = CAMERA_DEFAULT_PITCH);
 
     glm::mat4 GetViewMatrix();
 
     void ProcessKeyboard(float forwards, float sideways, float up, float deltaTime);
+
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
+
     void ProcessMouseScroll(float yoffset);
 
 private:

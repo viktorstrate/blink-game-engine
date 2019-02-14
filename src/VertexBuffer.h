@@ -6,7 +6,8 @@
 #pragma once
 
 
-class VertexBuffer {
+class VertexBuffer
+{
 public:
     unsigned int ID;
     unsigned int stride;

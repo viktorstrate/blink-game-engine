@@ -9,7 +9,8 @@
 #include <glad/glad.h>
 #include "VertexBuffer.h"
 
-struct VertexAttribute {
+struct VertexAttribute
+{
     unsigned int count;
     unsigned int type;
     unsigned int offset;
@@ -20,13 +21,14 @@ struct VertexAttribute {
     unsigned int sizeofType() const;
 };
 
-class VertexArray {
+class VertexArray
+{
 public:
     unsigned int ID;
 
     VertexArray();
 
-    void addBuffer(VertexBuffer& buffer, const VertexAttribute* attributes, unsigned int attributeCount);
+    void addBuffer(VertexBuffer &buffer, const VertexAttribute* attributes, unsigned int attributeCount);
 
     void use();
 

@@ -7,6 +7,7 @@
 #include <glad/glad.h>
 
 #include <assert.h>
+
 #define glCall(x) GLClearError(); \
     x; assert(GLLogCall(#x, __FILE__, __LINE__))
 
