@@ -2,16 +2,16 @@
 // Created by Viktor Hundahl Strate on 09/02/2019.
 //
 
-#include "Camera.h"
+#include "CameraComponent.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-        : Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+CameraComponent::CameraComponent(TransformComponent* transformCmp, glm::vec3 up, float yaw, float pitch)
+        : transformComponent(transformCmp),
+          Front(glm::vec3(0.0f, 0.0f, -1.0f)),
           MovementSpeed(CAMERA_DEFAULT_SPEED),
           MouseSensitivity(CAMERA_DEFAULT_SENSITIVITY),
           FOV(CAMERA_DEFAULT_FOV)
 {
 
-    Position = position;
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
@@ -20,7 +20,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 }
 
 // Calculates the front vector from the Camera's (updated) Euler Angles
-void Camera::updateCameraVectors()
+void CameraComponent::updateCameraVectors()
 {
     // Calculate the new Front vector
     glm::vec3 front;
@@ -34,12 +34,12 @@ void Camera::updateCameraVectors()
     Up = glm::normalize(glm::cross(Right, Front));
 }
 
-glm::mat4 Camera::GetViewMatrix()
+glm::mat4 CameraComponent::GetViewMatrix()
 {
-    return glm::lookAt(Position, Position + Front, Up);
+    return glm::lookAt(transformComponent->position, transformComponent->position + Front, Up);
 }
 
-void Camera::ProcessKeyboard(float forwards, float sideways, float up, float deltaTime)
+void CameraComponent::ProcessKeyboard(float forwards, float sideways, float up, float deltaTime)
 {
 
     glm::vec3 direction = glm::vec3(forwards, sideways, up);
@@ -51,10 +51,10 @@ void Camera::ProcessKeyboard(float forwards, float sideways, float up, float del
 
     direction = glm::normalize(direction)*velocity;
 
-    Position += -direction.x*Front + direction.y*Right + direction.z*WorldUp;
+    transformComponent->position += -direction.x*Front + direction.y*Right + direction.z*WorldUp;
 }
 
-void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
+void CameraComponent::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
@@ -74,7 +74,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
     updateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(float yoffset)
+void CameraComponent::ProcessMouseScroll(float yoffset)
 {
     float min = 1.0f;
     float max = 45.0f;

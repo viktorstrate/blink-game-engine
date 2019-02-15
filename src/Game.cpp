@@ -50,3 +50,12 @@ void Game::window_resize_callback(GLFWwindow* window, int width, int height)
     game->screenHeight = width;
     game->screenHeight = height;
 }
+
+bool Game::update()
+{
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+
+    return !glfwWindowShouldClose(window);
+}

@@ -16,6 +16,8 @@ public:
 
     virtual ~Game();
 
+    bool update();
+
     GLFWwindow* window;
     int screenWidth, screenHeight;
 

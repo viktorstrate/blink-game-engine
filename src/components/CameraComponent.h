@@ -12,6 +12,9 @@
 
 #include <vector>
 
+#include "Component.h"
+#include "TransformComponent.h"
+
 enum Camera_Movement
 {
     FORWARD,
@@ -26,10 +29,11 @@ const float CAMERA_DEFAULT_SPEED = 3.5f;
 const float CAMERA_DEFAULT_SENSITIVITY = 0.1f;
 const float CAMERA_DEFAULT_FOV = 45.0f;
 
-class Camera
+class CameraComponent : public Component
 {
 public:
-    glm::vec3 Position;
+
+//    glm::vec3 Position;
     glm::vec3 Front;
     glm::vec3 WorldUp;
     glm::vec3 Up;
@@ -42,7 +46,7 @@ public:
     float MouseSensitivity;
     float FOV;
 
-    explicit Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
+    explicit CameraComponent(TransformComponent* transformCmp, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
                     float yaw = CAMERA_DEFAULT_YAW, float pitch = CAMERA_DEFAULT_PITCH);
 
     glm::mat4 GetViewMatrix();
@@ -55,5 +59,6 @@ public:
 
 private:
     void updateCameraVectors();
+    TransformComponent* transformComponent;
 };
 

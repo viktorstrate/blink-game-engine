@@ -15,21 +15,21 @@ set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h src/VertexBuffer.c
 set(
     SOURCES
         src/Game.cpp
-        src/main.cpp
         src/Shader.cpp
         src/stb_image_setup.cpp
-        src/Camera.cpp
+        src/components/CameraComponent.cpp
         src/Mesh.cpp
         src/Model.cpp
         src/VertexArray.cpp
         src/Rendering.cpp
         src/Texture.cpp
+        src/GameObject.cpp
+        src/components/TransformComponent.cpp
 )
 
 set(
     HEADERS
         src/Game.h
-        src/Camera.h
         src/Shader.h
         src/Mesh.h
         src/Model.h
@@ -37,6 +37,10 @@ set(
         src/Texture.h
         src/VertexArray.h
         src/VertexBuffer.h
+        src/GameObject.h
+        src/Component.h
+        src/components/TransformComponent.h
+        src/components/CameraComponent.h
 )
 
 add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${VENDOR_SRCS})
