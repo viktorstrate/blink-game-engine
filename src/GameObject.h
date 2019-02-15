@@ -32,6 +32,6 @@ public:
 
 private:
     std::unordered_map<std::type_index, Component*> components;
-//    Component* components[MAX_COMPONENTS];
+
 };
 

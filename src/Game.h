@@ -19,7 +19,7 @@ public:
     bool update();
 
     GLFWwindow* window;
-    int screenWidth, screenHeight;
+    unsigned int screenWidth, screenHeight;
 
 private:
     static void window_resize_callback(GLFWwindow* window, int width, int height);

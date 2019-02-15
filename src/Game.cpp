@@ -2,7 +2,7 @@
 // Created by Viktor Hundahl Strate on 15/02/2019.
 //
 
-#include "Rendering.h"
+#include "graphics/Rendering.h"
 #include "Game.h"
 
 #include <iostream>

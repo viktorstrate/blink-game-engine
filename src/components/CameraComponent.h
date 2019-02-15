@@ -26,30 +26,33 @@ enum Camera_Movement
 const float CAMERA_DEFAULT_YAW = -90.0f;
 const float CAMERA_DEFAULT_PITCH = 0.0f;
 const float CAMERA_DEFAULT_SPEED = 3.5f;
-const float CAMERA_DEFAULT_SENSITIVITY = 0.1f;
+const float CAMERA_DEFAULT_SENSITIVITY = 0.001f;
 const float CAMERA_DEFAULT_FOV = 45.0f;
 
 class CameraComponent : public Component
 {
 public:
 
-//    glm::vec3 Position;
-    glm::vec3 Front;
-    glm::vec3 WorldUp;
-    glm::vec3 Up;
-    glm::vec3 Right;
+//    glm::vec3 Front;
+//    glm::vec3 Up;
+//    glm::vec3 Right;
 
-    float Yaw;
-    float Pitch;
+//    float Yaw;
+//    float Pitch;
 
     float MovementSpeed;
     float MouseSensitivity;
     float FOV;
 
-    explicit CameraComponent(TransformComponent* transformCmp, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
-                    float yaw = CAMERA_DEFAULT_YAW, float pitch = CAMERA_DEFAULT_PITCH);
+    explicit CameraComponent(TransformComponent* transformCmp);
 
     glm::mat4 GetViewMatrix();
+
+    glm::mat4 getProjectionMatrix(float aspect);
+
+    glm::vec3 front();
+    glm::vec3 up();
+    glm::vec3 right();
 
     void ProcessKeyboard(float forwards, float sideways, float up, float deltaTime);
 
@@ -58,7 +61,7 @@ public:
     void ProcessMouseScroll(float yoffset);
 
 private:
-    void updateCameraVectors();
+//    void updateCameraVectors();
     TransformComponent* transformComponent;
 };
 

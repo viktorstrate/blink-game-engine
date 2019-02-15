@@ -4,9 +4,6 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject() : components()
-{}
+GameObject::GameObject() = default;
 
-GameObject::~GameObject()
-{
-}
+GameObject::~GameObject() = default;

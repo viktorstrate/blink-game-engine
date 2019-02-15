@@ -10,40 +10,40 @@ find_library(
         NAMES assimp
 )
 
-set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h src/VertexBuffer.cpp src/VertexBuffer.h)
+set(VENDOR_SRCS vendor/src/glad.c vendor/includes/stb_image.h src/graphics/VertexBuffer.cpp src/graphics/VertexBuffer.h)
 
 set(
     SOURCES
         src/Game.cpp
-        src/Shader.cpp
-        src/stb_image_setup.cpp
+        src/graphics/Shader.cpp
+        src/graphics/stb_image_setup.cpp
         src/components/CameraComponent.cpp
         src/Mesh.cpp
         src/Model.cpp
-        src/VertexArray.cpp
-        src/Rendering.cpp
-        src/Texture.cpp
+        src/graphics/VertexArray.cpp
+        src/graphics/Rendering.cpp
+        src/graphics/Texture.cpp
         src/GameObject.cpp
         src/components/TransformComponent.cpp
 )
 
-set(
-    HEADERS
-        src/Game.h
-        src/Shader.h
-        src/Mesh.h
-        src/Model.h
-        src/Rendering.h
-        src/Texture.h
-        src/VertexArray.h
-        src/VertexBuffer.h
-        src/GameObject.h
-        src/Component.h
-        src/components/TransformComponent.h
-        src/components/CameraComponent.h
-)
+#set(
+#    HEADERS
+#        src/Game.h
+#        src/graphics/Shader.h
+#        src/Mesh.h
+#        src/Model.h
+#        src/graphics/Rendering.h
+#        src/graphics/Texture.h
+#        src/graphics/VertexArray.h
+#        src/graphics/VertexBuffer.h
+#        src/GameObject.h
+#        src/Component.h
+#        src/components/TransformComponent.h
+#        src/components/CameraComponent.h
+#)
 
-add_library(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${VENDOR_SRCS})
+add_library(${PROJECT_NAME} ${SOURCES} ${VENDOR_SRCS})
 
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES

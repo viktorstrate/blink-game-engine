@@ -17,10 +17,4 @@ class Component
 {
 public:
     virtual ~Component() = default;
-
-    virtual void update(float dt) {};
-
-    virtual void fixedUpdate() {};
-
-    virtual void draw() {};
 };

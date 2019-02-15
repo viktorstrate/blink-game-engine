@@ -7,7 +7,7 @@
 #include <iostream>
 #include <stb_image.h>
 
-Model::Model(char* path)
+Model::Model(std::string path)
 {
     loadModel(path);
 }

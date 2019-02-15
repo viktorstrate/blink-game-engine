@@ -12,13 +12,13 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "Shader.h"
+#include "graphics/Shader.h"
 #include "Mesh.h"
 
 class Model
 {
 public:
-    Model(char* path);
+    Model(std::string path);
 
     void Draw(Shader shader);
 

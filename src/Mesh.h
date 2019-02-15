@@ -8,8 +8,8 @@
 #include <vector>
 #include <string>
 
-#include "Shader.h"
-#include "Texture.h"
+#include "graphics/Shader.h"
+#include "graphics/Texture.h"
 
 struct Vertex
 {
