@@ -30,6 +30,8 @@ public:
         return dynamic_cast<T*>(components[typeid(T)]);
     }
 
+    GameObject* parent;
+
 private:
     std::unordered_map<std::type_index, Component*> components;
 

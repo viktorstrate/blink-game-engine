@@ -34,6 +34,14 @@ Game::Game(std::string windowTitle, int windowWidth, int windowHeight)
     }
 
     glfwSetFramebufferSizeCallback(window, Game::window_resize_callback);
+
+    { // width and height might differ on retina screens
+        int width = 0, height = 0;
+
+        glfwGetFramebufferSize(window, &width, &height);
+        screenWidth = width;
+        screenHeight = height;
+    }
 }
 
 Game::~Game()

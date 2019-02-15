@@ -6,4 +6,9 @@
 
 GameObject::GameObject() = default;
 
-GameObject::~GameObject() = default;
+GameObject::~GameObject()
+{
+    for(auto& comp : components) {
+        delete comp.second;
+    }
+}

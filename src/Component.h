@@ -11,10 +11,15 @@
 //#define COMPONENT_MODEL 1
 //#define COMPONENT_CAMERA 1
 
-typedef unsigned long ComponentMask;
 
 class Component
 {
 public:
     virtual ~Component() = default;
+
+    virtual void update(float dt) {};
+
+    virtual void fixedUpdate() {};
+
+    virtual void render() {};
 };
