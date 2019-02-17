@@ -12,7 +12,7 @@ class Game
 {
 public:
 
-    Game(std::string windowTitle, int windowWidth, int windowHeight);
+    Game(std::string windowTitle, unsigned int windowWidth, unsigned int windowHeight);
 
     virtual ~Game();
 
@@ -21,7 +21,11 @@ public:
     GLFWwindow* window;
     unsigned int screenWidth, screenHeight;
 
+    double deltaTime() const;
+
 private:
     static void window_resize_callback(GLFWwindow* window, int width, int height);
+    double dt;
+    double lastFrame;
 };
 

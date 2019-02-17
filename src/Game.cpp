@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-Game::Game(std::string windowTitle, int windowWidth, int windowHeight)
+Game::Game(std::string windowTitle, unsigned int windowWidth, unsigned int windowHeight)
         : screenWidth(windowWidth), screenHeight(windowHeight)
 {
     glfwInit();
@@ -19,8 +19,8 @@ Game::Game(std::string windowTitle, int windowWidth, int windowHeight)
 #endif
     glfwWindowHint(GLFW_SAMPLES, 4); // Anti aliasing
 
-    window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), NULL, NULL);
-    if (window == NULL) {
+    window = glfwCreateWindow(screenWidth, screenHeight, windowTitle.c_str(), nullptr, nullptr);
+    if (window == nullptr) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         exit(-1);
@@ -39,9 +39,11 @@ Game::Game(std::string windowTitle, int windowWidth, int windowHeight)
         int width = 0, height = 0;
 
         glfwGetFramebufferSize(window, &width, &height);
-        screenWidth = width;
-        screenHeight = height;
+        screenWidth = (unsigned)width;
+        screenHeight = (unsigned)height;
     }
+
+    lastFrame = glfwGetTime();
 }
 
 Game::~Game()
@@ -55,15 +57,24 @@ void Game::window_resize_callback(GLFWwindow* window, int width, int height)
 
     glViewport(0, 0, width, height);
 
-    game->screenHeight = width;
-    game->screenHeight = height;
+    game->screenHeight = (unsigned)width;
+    game->screenHeight = (unsigned)height;
 }
 
 bool Game::update()
 {
 
+    double currentFrame = glfwGetTime();
+    dt = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
     glfwSwapBuffers(window);
     glfwPollEvents();
 
     return !glfwWindowShouldClose(window);
+}
+
+double Game::deltaTime() const
+{
+    return dt;
 }

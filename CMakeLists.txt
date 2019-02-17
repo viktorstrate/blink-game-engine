@@ -17,13 +17,15 @@ set(
         src/Game.cpp
         src/graphics/Shader.cpp
         src/graphics/stb_image_setup.cpp
-        src/components/CameraComponent.cpp
         src/Mesh.cpp
         src/Model.cpp
         src/graphics/VertexArray.cpp
         src/graphics/Rendering.cpp
         src/graphics/Texture.cpp
         src/GameObject.cpp
+        src/World.cpp
+        src/ComponentManager.cpp
+        src/components/CameraComponent.cpp
         src/components/TransformComponent.cpp
 )
 

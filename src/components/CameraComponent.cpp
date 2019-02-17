@@ -8,10 +8,13 @@
 
 #define WORLD_UP glm::vec3(0.0f, 1.0f, 0.0f)
 
-CameraComponent::CameraComponent(TransformComponent* transformCmp)
+CameraComponent::CameraComponent(World* world, TransformComponent* transformCmp)
         : transform(transformCmp),
-          FOV(CAMERA_DEFAULT_FOV)
-{}
+          FOV(CAMERA_DEFAULT_FOV),
+          Component(world)
+{
+
+}
 
 glm::mat4 CameraComponent::GetViewMatrix()
 {

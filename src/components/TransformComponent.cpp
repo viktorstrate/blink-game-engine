@@ -4,6 +4,6 @@
 
 #include "TransformComponent.h"
 
-TransformComponent::TransformComponent(glm::vec3 pos, glm::vec3 scale, glm::quat rotation)
-    : position(pos), scale(scale), rotation(rotation)
+TransformComponent::TransformComponent(World* world, glm::vec3 pos, glm::vec3 scale, glm::quat rotation)
+    : Component(world), position(pos), scale(scale), rotation(rotation)
 {}

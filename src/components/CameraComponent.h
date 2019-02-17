@@ -20,7 +20,7 @@ class CameraComponent : public Component
 public:
     float FOV;
 
-    explicit CameraComponent(TransformComponent* transformCmp);
+    explicit CameraComponent(World* world, TransformComponent* transformCmp);
 
     glm::mat4 GetViewMatrix();
 
