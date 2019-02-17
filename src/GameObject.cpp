@@ -3,8 +3,9 @@
 //
 
 #include "GameObject.h"
+#include "World.h"
 
-GameObject::GameObject() = default;
+GameObject::GameObject() {}
 
 GameObject::~GameObject()
 {

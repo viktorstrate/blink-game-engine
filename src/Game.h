@@ -7,6 +7,7 @@
 
 #include <GLFW/glfw3.h>
 #include <string>
+#include "systems/DynamicSystem.h"
 
 class Game
 {
@@ -23,9 +24,16 @@ public:
 
     double deltaTime() const;
 
+    World* getActiveWorld() const;
+
+    void setActiveWorld(World* activeWorld);
+
 private:
     static void window_resize_callback(GLFWwindow* window, int width, int height);
     double dt;
     double lastFrame;
+    double fixedUpdateTime;
+
+    World* activeWorld;
 };
 

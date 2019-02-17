@@ -16,10 +16,18 @@ class World
 public:
     World(Game* game);
 
+    void update(double dt);
+    void fixedUpdate();
+    void render();
+
     void addGameObject(const GameObject& gameObject);
 
     CameraComponent* activeCamera;
     std::vector<GameObject> gameObjects;
     Game* game;
+
+protected:
+
+    DynamicSystem dynamicSystem;
 };
 

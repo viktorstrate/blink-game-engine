@@ -24,10 +24,9 @@ set(
         src/graphics/Texture.cpp
         src/GameObject.cpp
         src/World.cpp
-        src/ComponentManager.cpp
         src/components/CameraComponent.cpp
         src/components/TransformComponent.cpp
-)
+        src/components/DynamicComponent.h src/systems/DynamicSystem.cpp src/systems/DynamicSystem.h)
 
 #set(
 #    HEADERS

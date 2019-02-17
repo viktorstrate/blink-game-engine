@@ -4,11 +4,14 @@
 
 #include "graphics/Rendering.h"
 #include "Game.h"
+#include "World.h"
 
 #include <iostream>
 
+#define UPDATE_TICKS_PER_SECOND 120
+
 Game::Game(std::string windowTitle, unsigned int windowWidth, unsigned int windowHeight)
-        : screenWidth(windowWidth), screenHeight(windowHeight)
+        : screenWidth(windowWidth), screenHeight(windowHeight), activeWorld(nullptr)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -44,6 +47,7 @@ Game::Game(std::string windowTitle, unsigned int windowWidth, unsigned int windo
     }
 
     lastFrame = glfwGetTime();
+    fixedUpdateTime = 0;
 }
 
 Game::~Game()
@@ -68,8 +72,19 @@ bool Game::update()
     dt = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
+    double fixedUpdateRate = 1.0/static_cast<double>(UPDATE_TICKS_PER_SECOND);
+    fixedUpdateTime += dt;
+    while (fixedUpdateTime > fixedUpdateRate) {
+        fixedUpdateTime -= fixedUpdateRate;
+        if (activeWorld)
+            activeWorld->fixedUpdate();
+    }
+
     glfwSwapBuffers(window);
     glfwPollEvents();
+
+    if (activeWorld)
+        activeWorld->update(dt);
 
     return !glfwWindowShouldClose(window);
 }
@@ -77,4 +92,15 @@ bool Game::update()
 double Game::deltaTime() const
 {
     return dt;
+}
+
+World* Game::getActiveWorld() const
+{
+    return activeWorld;
+}
+
+void Game::setActiveWorld(World* activeWorld)
+{
+    this->activeWorld = activeWorld;
+    this->activeWorld->game = this;
 }

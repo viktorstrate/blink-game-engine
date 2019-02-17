@@ -10,11 +10,13 @@
 #include <vector>
 #include "Component.h"
 
+class World;
+
 class GameObject
 {
 
 public:
-    GameObject();
+    explicit GameObject();
 
     virtual ~GameObject();
 
@@ -25,12 +27,14 @@ public:
     }
 
     template <class T>
-    T* getComponent() {
+    T* getComponent()
+    {
         static_assert(std::is_base_of<Component, T>::value);
         return dynamic_cast<T*>(components[typeid(T)]);
     }
 
     GameObject* parent;
+    World* world;
 
 private:
     std::unordered_map<std::type_index, Component*> components;
