@@ -36,7 +36,11 @@ Game::Game(std::string windowTitle, unsigned int windowWidth, unsigned int windo
         exit(-1);
     }
 
+    // Callbacks
     glfwSetFramebufferSizeCallback(window, Game::window_resize_callback);
+
+    glfwSetCursorPosCallback(window, Game::mouseMoveCallback);
+    glfwSetScrollCallback(window, Game::mouseScrollCallback);
 
     { // width and height might differ on retina screens
         int width = 0, height = 0;
@@ -55,19 +59,8 @@ Game::~Game()
     glfwDestroyWindow(window);
 }
 
-void Game::window_resize_callback(GLFWwindow* window, int width, int height)
-{
-    Game* game = (Game*)glfwGetWindowUserPointer(window);
-
-    glViewport(0, 0, width, height);
-
-    game->screenHeight = (unsigned)width;
-    game->screenHeight = (unsigned)height;
-}
-
 bool Game::update()
 {
-
     double currentFrame = glfwGetTime();
     dt = currentFrame - lastFrame;
     lastFrame = currentFrame;
@@ -77,14 +70,22 @@ bool Game::update()
     while (fixedUpdateTime > fixedUpdateRate) {
         fixedUpdateTime -= fixedUpdateRate;
         if (activeWorld)
+        {
             activeWorld->fixedUpdate();
+        }
     }
+
+    activeWorld->onInput(window, dt);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
 
     if (activeWorld)
         activeWorld->update(dt);
+
+    // Close window if escape is pressed
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 
     return !glfwWindowShouldClose(window);
 }
@@ -103,4 +104,32 @@ void Game::setActiveWorld(World* activeWorld)
 {
     this->activeWorld = activeWorld;
     this->activeWorld->game = this;
+}
+
+void Game::window_resize_callback(GLFWwindow* window, int width, int height)
+{
+    Game* game = (Game*)glfwGetWindowUserPointer(window);
+
+    glViewport(0, 0, width, height);
+
+    game->screenHeight = (unsigned)width;
+    game->screenHeight = (unsigned)height;
+}
+
+void Game::mouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    Game* game = (Game*)glfwGetWindowUserPointer(window);
+
+    World* world = game->getActiveWorld();
+    if (world)
+        world->onMouseMove(xpos, ypos);
+}
+
+void Game::mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    Game* game = (Game*)glfwGetWindowUserPointer(window);
+
+    World* world = game->getActiveWorld();
+    if (world)
+        world->onMouseScroll(xoffset, yoffset);
 }

@@ -12,7 +12,7 @@
 class TransformComponent : public Component
 {
 public:
-    explicit TransformComponent(World* world, glm::vec3 pos = glm::vec3(0.0f), glm::vec3 scale = glm::vec3(1.0f),
+    explicit TransformComponent(glm::vec3 pos = glm::vec3(0.0f), glm::vec3 scale = glm::vec3(1.0f),
             glm::quat rotation = glm::qua<float>(glm::vec3(glm::radians(180.0f), 0.0f, 0.0f)));
 
     glm::vec3 position;

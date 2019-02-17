@@ -22,7 +22,7 @@ set(
         src/graphics/VertexArray.cpp
         src/graphics/Rendering.cpp
         src/graphics/Texture.cpp
-        src/GameObject.cpp
+        src/Entity.cpp
         src/World.cpp
         src/components/CameraComponent.cpp
         src/components/TransformComponent.cpp

@@ -8,31 +8,30 @@
 
 #define WORLD_UP glm::vec3(0.0f, 1.0f, 0.0f)
 
-CameraComponent::CameraComponent(World* world, TransformComponent* transformCmp)
-        : transform(transformCmp),
-          FOV(CAMERA_DEFAULT_FOV),
-          Component(world)
+CameraComponent::CameraComponent()
+        : FOV(CAMERA_DEFAULT_FOV),
+          Component()
 {
 
 }
 
-glm::mat4 CameraComponent::GetViewMatrix()
+glm::mat4 CameraComponent::GetViewMatrix(const TransformComponent* transform) const
 {
     glm::mat4 mat = glm::lookAt(transform->position,
-                                transform->position+front(), WORLD_UP);
+                                transform->position+front(transform), WORLD_UP);
 
     return mat;
 }
 
-glm::mat4 CameraComponent::getProjectionMatrix(float aspect)
+glm::mat4 CameraComponent::getProjectionMatrix(const float &aspect) const
 {
     glm::mat4 projection = glm::perspective(glm::radians(FOV), aspect,
-                     0.1f, 100.0f);
+                                            0.1f, 100.0f);
 
     return projection;
 }
 
-glm::vec3 CameraComponent::front()
+glm::vec3 CameraComponent::front(const TransformComponent* transform) const
 {
     glm::vec3 front = transform->rotation * glm::vec3(1.0f, 0.0f, 0.0f);
     front = glm::normalize(front);

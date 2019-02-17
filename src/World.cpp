@@ -8,22 +8,38 @@ World::World(Game* game) : game(game),
     dynamicSystem()
 {}
 
-void World::addGameObject(const GameObject &gameObject)
+void World::addEntity(Entity &entity)
 {
-    gameObjects.push_back(gameObject);
+    entity.world = this;
+    entities.push_back(entity);
 }
 
 void World::update(double dt)
 {
-    dynamicSystem.update(gameObjects, dt);
+    dynamicSystem.update(entities, dt);
 }
 
 void World::fixedUpdate()
 {
-    dynamicSystem.fixedUpdate(gameObjects);
+    dynamicSystem.fixedUpdate(entities);
 }
 
 void World::render()
 {
 
+}
+
+void World::onInput(GLFWwindow* window, double dt)
+{
+    dynamicSystem.processInput(entities, window, dt);
+}
+
+void World::onMouseMove(double xpos, double ypos)
+{
+    dynamicSystem.processMouseMove(entities, xpos, ypos);
+}
+
+void World::onMouseScroll(double horizontal, double vertical)
+{
+    dynamicSystem.processMouseScroll(entities, horizontal, vertical);
 }

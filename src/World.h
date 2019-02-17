@@ -6,7 +6,7 @@
 #pragma once
 
 #include <vector>
-#include "GameObject.h"
+#include "Entity.h"
 #include "Game.h"
 
 class CameraComponent;
@@ -20,10 +20,14 @@ public:
     void fixedUpdate();
     void render();
 
-    void addGameObject(const GameObject& gameObject);
+    void onInput(GLFWwindow* window, double dt);
+    void onMouseMove(double xpos, double ypos);
+    void onMouseScroll(double horizontal, double vertical);
+
+    void addEntity(Entity &entity);
 
     CameraComponent* activeCamera;
-    std::vector<GameObject> gameObjects;
+    std::vector<Entity> entities;
     Game* game;
 
 protected:

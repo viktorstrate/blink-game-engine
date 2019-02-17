@@ -20,15 +20,13 @@ class CameraComponent : public Component
 public:
     float FOV;
 
-    explicit CameraComponent(World* world, TransformComponent* transformCmp);
+    explicit CameraComponent();
 
-    glm::mat4 GetViewMatrix();
+    glm::mat4 GetViewMatrix(const TransformComponent* transform) const;
 
-    glm::mat4 getProjectionMatrix(float aspect);
+    glm::mat4 getProjectionMatrix(const float &aspect) const;
 
-    glm::vec3 front();
+    glm::vec3 front(const TransformComponent* transform) const;
 
-private:
-    TransformComponent* transform;
 };
 

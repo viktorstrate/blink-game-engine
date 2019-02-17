@@ -5,21 +5,22 @@
 
 #pragma once
 
-//#define MAX_COMPONENTS 3
-//
-//#define COMPONENT_TRANSFORM 0
-//#define COMPONENT_MODEL 1
-//#define COMPONENT_CAMERA 1
-
-class World;
+class Entity;
 
 class Component
 {
 public:
-    explicit Component(World* world) : world(world) {}
+    explicit Component() : entity(nullptr) {}
 
     virtual ~Component() = default;
 
+    virtual void destroy() {};
+
+    virtual void configure(Entity* entity)
+    {
+        this->entity = entity;
+    }
+
 protected:
-    World* world;
+    Entity* entity;
 };
