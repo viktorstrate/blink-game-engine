@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
 
 project(blink)
 
@@ -17,8 +17,8 @@ set(
         src/Game.cpp
         src/graphics/Shader.cpp
         src/graphics/stb_image_setup.cpp
-        src/Mesh.cpp
-        src/Model.cpp
+        src/graphics/Mesh.cpp
+        src/graphics/Model.cpp
         src/graphics/VertexArray.cpp
         src/graphics/Rendering.cpp
         src/graphics/Texture.cpp
@@ -26,7 +26,13 @@ set(
         src/World.cpp
         src/components/CameraComponent.cpp
         src/components/TransformComponent.cpp
-        src/components/DynamicComponent.h src/systems/DynamicSystem.cpp src/systems/DynamicSystem.h)
+        src/components/DynamicComponent.h
+        src/systems/DynamicSystem.cpp
+        src/systems/DynamicSystem.h
+        src/components/ModelComponent.cpp
+        src/components/ModelComponent.h
+        src/systems/ModelSystem.cpp
+        src/systems/ModelSystem.h)
 
 #set(
 #    HEADERS

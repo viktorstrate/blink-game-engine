@@ -16,9 +16,9 @@ void DynamicSystem::update(std::vector<Entity> &gameObjects, double dt)
     }
 }
 
-void DynamicSystem::fixedUpdate(std::vector<Entity> &gameObjects)
+void DynamicSystem::fixedUpdate(std::vector<Entity> &entity)
 {
-    for (auto &item : gameObjects) {
+    for (auto &item : entity) {
         auto* component = item.get<DynamicComponent>();
         if (component != nullptr) {
             component->fixedUpdate();
@@ -26,27 +26,27 @@ void DynamicSystem::fixedUpdate(std::vector<Entity> &gameObjects)
     }
 }
 
-void DynamicSystem::processInput(std::vector<Entity> &gameObjects, GLFWwindow* window, double dt)
+void DynamicSystem::processInput(std::vector<Entity> &entity, GLFWwindow* window, double dt)
 {
-    for (auto &item : gameObjects) {
+    for (auto &item : entity) {
         item.each<DynamicComponent>([window, dt](DynamicComponent* component) {
             component->onInput(window, dt);
         });
     }
 }
 
-void DynamicSystem::processMouseMove(std::vector<Entity> &gameObjects, double xpos, double ypos)
+void DynamicSystem::processMouseMove(std::vector<Entity> &entity, double xpos, double ypos)
 {
-    for (auto &item : gameObjects) {
+    for (auto &item : entity) {
         item.each<DynamicComponent>([xpos, ypos](DynamicComponent* component) {
             component->onMouseMove(xpos, ypos);
         });
     }
 }
 
-void DynamicSystem::processMouseScroll(std::vector<Entity> &gameObjects, double horizontal, double vertical)
+void DynamicSystem::processMouseScroll(std::vector<Entity> &entity, double horizontal, double vertical)
 {
-    for (auto &item : gameObjects) {
+    for (auto &item : entity) {
         item.each<DynamicComponent>([horizontal, vertical](DynamicComponent* component) {
             component->onMouseScroll(horizontal, vertical);
         });

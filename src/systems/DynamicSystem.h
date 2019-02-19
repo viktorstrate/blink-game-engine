@@ -11,9 +11,9 @@ class DynamicSystem
 {
 public:
     void update(std::vector<Entity> &gameObjects, double dt);
-    void fixedUpdate(std::vector<Entity> &gameObjects);
+    void fixedUpdate(std::vector<Entity> &entity);
 
-    void processInput(std::vector<Entity> &gameObjects, GLFWwindow* window, double dt);
-    void processMouseMove(std::vector<Entity> &gameObjects, double xpos, double ypos);
-    void processMouseScroll(std::vector<Entity> &gameObjects, double horizontal, double vertical);
+    void processInput(std::vector<Entity> &entity, GLFWwindow* window, double dt);
+    void processMouseMove(std::vector<Entity> &entity, double xpos, double ypos);
+    void processMouseScroll(std::vector<Entity> &entity, double horizontal, double vertical);
 };

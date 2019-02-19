@@ -7,16 +7,16 @@
 #include <iostream>
 #include <stb_image.h>
 
-Model::Model(std::string path)
+Model::Model(const std::string &path) : Model()
 {
     loadModel(path);
 }
 
+Model::Model() : modelLoaded(false)
+{}
+
 Model::~Model()
 {
-    for (auto tex : textures_loaded) {
-        delete tex.texture;
-    }
 }
 
 void Model::Draw(Shader shader)
@@ -27,6 +27,14 @@ void Model::Draw(Shader shader)
 
 void Model::loadModel(std::string path)
 {
+    if (modelLoaded)
+    {
+        std::cout << "ERROR::ASSIMP::LOAD Model already loaded" << std::endl;
+        assert(!modelLoaded);
+    }
+
+    modelLoaded = true;
+
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 

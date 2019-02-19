@@ -9,7 +9,7 @@ Entity::Entity() {}
 
 Entity::~Entity()
 {
-    for(auto& comp : components) {
-        delete comp.second;
-    }
+//    for(auto& comp : components) {
+//        delete comp.second;
+//    }
 }

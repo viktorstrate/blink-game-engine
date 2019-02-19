@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include <glad/glad.h>
 #include <glm/matrix.hpp>
 #include <string>
 

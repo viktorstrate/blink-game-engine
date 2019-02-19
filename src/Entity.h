@@ -25,7 +25,7 @@ public:
     void assign(Args&&... args) {
         static_assert(std::is_base_of<Component, T>::value);
 
-        T* component = new T(args...);
+        T* component = new T( args...);
 
         static_cast<Component*>(component)->configure(this);
 
@@ -35,12 +35,23 @@ public:
     template <class T = Component>
     T* get()
     {
-        return dynamic_cast<T*>(components[typeid(T)]);
+        for(auto& comp : components)
+        {
+//            if (comp.first != typeid(T)) continue;
+
+            if (T* casted = dynamic_cast<T*>(comp.second))
+            {
+                return casted;
+            }
+        }
+        return nullptr;
     }
 
     template <class T = Component>
     void each(std::function<void (T*)> callback)
     {
+        if (!this->contains<T>()) return;
+
         for (auto& c : components)
         {
             Component* comp = c.second;
@@ -54,7 +65,19 @@ public:
     template <class T>
     bool contains()
     {
-        return components.find(typeid(T)) != components.end();
+        return get<T>() != nullptr;
+//        for(auto& comp : components)
+//        {
+//            if (comp.first != typeid(T)) continue;
+//
+//            if (T* casted = dynamic_cast<T*>(comp.second))
+//            {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//        return components.find(typeid(T)) != components.end();
     }
 
     template <class T, class U, class... Types>
@@ -64,6 +87,7 @@ public:
     }
 
     World* world;
+    int id;
 
 private:
     std::unordered_map<std::type_index, Component*> components;

@@ -9,6 +9,9 @@
 #include "Entity.h"
 #include "Game.h"
 
+#include "systems/DynamicSystem.h"
+#include "systems/ModelSystem.h"
+
 class CameraComponent;
 
 class World
@@ -24,7 +27,12 @@ public:
     void onMouseMove(double xpos, double ypos);
     void onMouseScroll(double horizontal, double vertical);
 
-    void addEntity(Entity &entity);
+    Entity* makeEntity();
+    Entity* getEntity(int id);
+
+    DynamicSystem& getDynamicSystem();
+
+    ModelSystem& getModelSystem();
 
     CameraComponent* activeCamera;
     std::vector<Entity> entities;
@@ -32,6 +40,9 @@ public:
 
 protected:
 
+    int nextId = 1;
+
     DynamicSystem dynamicSystem;
+    ModelSystem modelSystem;
 };
 

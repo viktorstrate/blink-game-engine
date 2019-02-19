@@ -18,18 +18,22 @@
 class Model
 {
 public:
-    Model(std::string path);
+    Model();
+
+    Model(const std::string &path);
 
     void Draw(Shader shader);
 
     virtual ~Model();
 
+    void loadModel(std::string path);
+
+
 private:
     std::vector<Mesh> meshes;
     std::string directory;
     std::vector<MeshTexture> textures_loaded;
-
-    void loadModel(std::string path);
+    bool modelLoaded;
 
     void processNode(aiNode* node, const aiScene* scene);
 
