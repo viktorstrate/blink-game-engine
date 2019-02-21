@@ -21,6 +21,7 @@ Model::~Model()
 
 void Model::Draw(Shader shader)
 {
+    shader.use();
     for (auto &mesh : meshes)
         mesh.Draw(shader);
 }

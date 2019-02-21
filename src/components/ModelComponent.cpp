@@ -4,10 +4,13 @@
 
 #include "ModelComponent.h"
 
-ModelComponent::ModelComponent(int modelId) : Component(), modelId(modelId), modelMatrix(1.f)
+#include "Entity.h"
+#include "components/TransformComponent.h"
+
+ModelComponent::ModelComponent(int modelId) : Component(), modelId(modelId), shaderId(0)
 {}
 
-ModelComponent::ModelComponent() : Component()
+ModelComponent::ModelComponent() : Component(), modelId(0), shaderId(0)
 {}
 
 int ModelComponent::getModelId() const
@@ -28,4 +31,13 @@ int ModelComponent::getShaderId() const
 void ModelComponent::setShader(int shaderId)
 {
     ModelComponent::shaderId = shaderId;
+}
+
+glm::mat4 ModelComponent::getModelMatrix()
+{
+    auto* transform = entity->get<TransformComponent>();
+
+    glm::mat4 model = transform->applyTransform(glm::mat4(1.f));
+
+    return model;
 }

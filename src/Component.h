@@ -18,6 +18,11 @@ public:
     virtual void destroy()
     {};
 
+    Entity* getEntity() const
+    {
+        return entity;
+    }
+
     virtual void configure(Entity* entity)
     {
         this->entity = entity;

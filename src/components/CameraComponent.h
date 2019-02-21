@@ -12,6 +12,7 @@
 
 #include "Component.h"
 #include "TransformComponent.h"
+#include "graphics/Shader.h"
 
 const float CAMERA_DEFAULT_FOV = 45.0f;
 
@@ -22,11 +23,13 @@ public:
 
     explicit CameraComponent();
 
-    glm::mat4 GetViewMatrix(const TransformComponent* transform) const;
+    glm::mat4 GetViewMatrix() const;
 
-    glm::mat4 getProjectionMatrix(const float &aspect) const;
+    glm::mat4 getProjectionMatrix() const;
 
     glm::vec3 front(const TransformComponent* transform) const;
+
+    void configureShader(Shader& shader);
 
 };
 

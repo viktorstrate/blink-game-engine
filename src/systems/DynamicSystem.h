@@ -7,6 +7,8 @@
 
 #include "Entity.h"
 
+class GLFWwindow;
+
 class DynamicSystem
 {
 public:

@@ -80,8 +80,10 @@ bool Game::update()
     glfwSwapBuffers(window);
     glfwPollEvents();
 
-    if (activeWorld)
+    if (activeWorld) {
         activeWorld->update(dt);
+        activeWorld->render();
+    }
 
     // Close window if escape is pressed
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)

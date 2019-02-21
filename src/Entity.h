@@ -66,18 +66,6 @@ public:
     bool contains()
     {
         return get<T>() != nullptr;
-//        for(auto& comp : components)
-//        {
-//            if (comp.first != typeid(T)) continue;
-//
-//            if (T* casted = dynamic_cast<T*>(comp.second))
-//            {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//        return components.find(typeid(T)) != components.end();
     }
 
     template <class T, class U, class... Types>

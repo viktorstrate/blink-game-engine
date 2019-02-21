@@ -2,24 +2,31 @@
 // Created by Viktor Hundahl Strate on 2019-02-19.
 //
 
+#include "components/CameraComponent.h"
 #include "components/ModelComponent.h"
 #include "World.h"
 #include "ModelSystem.h"
 
 ModelSystem::ModelSystem()
-    : nextId(1), mainShader("assets/shaders/color-light.glsl")
+    : nextId(1), mainShader("assets/shaders/lamp.glsl")
 {}
 
 void ModelSystem::drawModels(World* world)
 {
     for (auto &item : world->entities) {
-        auto* component = item.get<ModelComponent>();
-        if (component != nullptr) {
+        if (!item.contains<ModelComponent, TransformComponent>()) continue;
 
-            mainShader.setMat4("model", component->modelMatrix);
-            int id = component->getModelId();
-            loadedModels[id].Draw(mainShader);
-        }
+        auto* modelComp = item.get<ModelComponent>();
+
+        glm::mat4 model = modelComp->getModelMatrix();
+
+        mainShader.use();
+
+        mainShader.setMat4("model", model);
+        world->activeCamera->configureShader(mainShader);
+
+        int id = modelComp->getModelId();
+        loadedModels[id].Draw(mainShader);
     }
 }
 

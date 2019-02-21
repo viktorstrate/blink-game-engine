@@ -5,7 +5,7 @@
 #include "World.h"
 
 World::World(Game* game) : game(game),
-    dynamicSystem(), modelSystem()
+    dynamicSystem(), modelSystem(), activeCamera(nullptr), entities(100)
 {}
 
 Entity* World::makeEntity()
@@ -37,7 +37,12 @@ void World::fixedUpdate()
 
 void World::render()
 {
+    //glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 
+    modelSystem.drawModels(this);
 }
 
 void World::onInput(GLFWwindow* window, double dt)
