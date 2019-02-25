@@ -20,8 +20,10 @@ public:
     // the program ID
     unsigned int ID;
 
+    Shader() = default;
+
     // constructor reads and builds the shader
-    explicit Shader(const char* shaderPath);
+    explicit Shader(const std::string &shaderPath);
 
     // use/activate the shader
     void use();
@@ -44,7 +46,7 @@ public:
     void setVec3(const std::string &name, glm::vec3 vector);
 
 private:
-    ShaderSource parseShader(const char* shaderPath);
+    ShaderSource parseShader(const std::string &shaderPath);
 
 };
 

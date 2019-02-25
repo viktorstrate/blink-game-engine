@@ -4,11 +4,12 @@
 
 #include "components/CameraComponent.h"
 #include "components/ModelComponent.h"
+#include "graphics/Shader.h"
 #include "World.h"
 #include "ModelSystem.h"
 
 ModelSystem::ModelSystem()
-    : nextId(1), mainShader("assets/shaders/lamp.glsl")
+    : nextModelId(1), loadedModels(), loadedShaders(), nextShaderId(1)
 {}
 
 void ModelSystem::drawModels(World* world)
@@ -20,23 +21,41 @@ void ModelSystem::drawModels(World* world)
 
         glm::mat4 model = modelComp->getModelMatrix();
 
-        mainShader.use();
+        auto& shader = loadedShaders[modelComp->getShaderId()];
 
-        mainShader.setMat4("model", model);
-        world->activeCamera->configureShader(mainShader);
+        shader.use();
+
+        shader.setMat4("model", model);
+        world->activeCamera->configureShader(shader);
 
         int id = modelComp->getModelId();
-        loadedModels[id].Draw(mainShader);
+        loadedModels[id].Draw(shader);
     }
 }
 
 int ModelSystem::loadModel(const std::string &path)
 {
-    int id = ++nextId;
+    int id = nextModelId++;
 
     Model model(path);
 
     loadedModels[id] = model;
 
     return id;
+}
+
+int ModelSystem::loadShader(const std::string& path)
+{
+    int id = nextShaderId++;
+
+    Shader shader(path);
+
+    loadedShaders[id] = shader;
+
+    return id;
+}
+
+Shader* ModelSystem::getShader(int id)
+{
+    return &loadedShaders[id];
 }

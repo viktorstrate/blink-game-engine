@@ -11,7 +11,8 @@
 
 #include "graphics/Model.h"
 #include "Entity.h"
-#include "graphics/Shader.h"
+
+class Shader;
 
 class ModelSystem
 {
@@ -20,12 +21,18 @@ public:
 
     void drawModels(World* world);
 
-    int loadModel(const std::string &path);
+    int loadModel(const std::string& path);
+
+    int loadShader(const std::string& path);
+
+    Shader* getShader(int id);
 
 private:
     std::unordered_map<int, Model> loadedModels;
-    int nextId;
-    Shader mainShader;
+    std::unordered_map<int, Shader> loadedShaders;
+    int nextModelId;
+    int nextShaderId;
+//    Shader mainShader;
 };
 
 

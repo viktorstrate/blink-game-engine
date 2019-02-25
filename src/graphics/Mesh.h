@@ -11,7 +11,7 @@
 #include "graphics/Shader.h"
 #include "graphics/Texture.h"
 
-struct Vertex
+struct MeshVertex
 {
     glm::vec3 Position;
     glm::vec3 Normal;
@@ -28,11 +28,11 @@ struct MeshTexture
 class Mesh
 {
 public:
-    std::vector<Vertex> vertices;
+    std::vector<MeshVertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<MeshTexture> textures;
 
-    Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
+    Mesh(const std::vector<MeshVertex> &vertices, const std::vector<unsigned int> &indices,
          const std::vector<MeshTexture> &textures);
 
     void Draw(Shader shader);

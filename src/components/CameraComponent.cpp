@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "TransformComponent.h"
 #include "CameraComponent.h"
+#include "graphics/Shader.h"
 
 #include <iostream>
 #include <World.h>

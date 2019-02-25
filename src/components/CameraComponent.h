@@ -12,7 +12,8 @@
 
 #include "Component.h"
 #include "TransformComponent.h"
-#include "graphics/Shader.h"
+
+class Shader;
 
 const float CAMERA_DEFAULT_FOV = 45.0f;
 

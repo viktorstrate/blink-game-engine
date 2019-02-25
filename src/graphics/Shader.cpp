@@ -11,7 +11,7 @@
 #include <fstream>
 #include <sstream>
 
-Shader::ShaderSource Shader::parseShader(const char* shaderPath)
+Shader::ShaderSource Shader::parseShader(const std::string &shaderPath)
 {
 
     std::ifstream fileStream;
@@ -57,7 +57,7 @@ static void validateShader(unsigned int shader, const std::string &name)
     }
 }
 
-Shader::Shader(const char* shaderPath)
+Shader::Shader(const std::string &shaderPath)
 {
     ShaderSource shaders = parseShader(shaderPath);
 
