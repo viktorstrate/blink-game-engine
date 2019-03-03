@@ -32,7 +32,7 @@ set(
         src/components/ModelComponent.cpp
         src/components/ModelComponent.h
         src/systems/ModelSystem.cpp
-        src/systems/ModelSystem.h src/components/LightComponent.cpp src/components/LightComponent.h src/systems/ShaderSystem.cpp src/systems/ShaderSystem.h)
+        src/systems/ModelSystem.h src/components/LightComponent.cpp src/components/LightComponent.h src/systems/ShaderSystem.cpp src/systems/ShaderSystem.h src/graphics/UniformBlock.cpp src/graphics/UniformBlock.h)
 
 #set(
 #    HEADERS

@@ -8,6 +8,8 @@
 #include <glm/matrix.hpp>
 #include <string>
 
+#include "graphics/UniformBlock.h"
+
 class Shader
 {
 public:
@@ -17,7 +19,7 @@ public:
         std::string vertex, fragment;
     };
 
-    // the program ID
+    // the program blockIndex
     unsigned int ID;
 
     Shader() = default;
@@ -44,6 +46,8 @@ public:
     void setVec3(const std::string &name, float x, float y, float z);
 
     void setVec3(const std::string &name, glm::vec3 vector);
+
+    void setUniformBlock(const std::string& name, UniformBlock& block);
 
 private:
     ShaderSource parseShader(const std::string &shaderPath);

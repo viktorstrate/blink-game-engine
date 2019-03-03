@@ -4,7 +4,7 @@
 
 #include "Shader.h"
 
-#include <glad/glad.h>
+#include "graphics/Rendering.h"
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
@@ -98,6 +98,9 @@ Shader::Shader(const std::string &shaderPath)
     // delete the shaders as they're linked into our program now and no longer necessery
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+
+    int matrixBlock = glGetUniformBlockIndex(ID, "Matrices");
+    glUniformBlockBinding(ID, matrixBlock, 0);
 }
 
 void Shader::use()
@@ -143,4 +146,10 @@ void Shader::setVec3(const std::string &name, float x, float y, float z)
 void Shader::setVec3(const std::string &name, glm::vec3 vector)
 {
     setVec3(name, vector.x, vector.y, vector.z);
+}
+
+void Shader::setUniformBlock(const std::string& name, UniformBlock& block)
+{
+    unsigned int blockIndex = glGetUniformBlockIndex(ID, name.c_str());
+    glUniformBlockBinding(ID, blockIndex, block.getBlockIndex());
 }

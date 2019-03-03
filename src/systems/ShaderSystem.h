@@ -16,6 +16,7 @@ class Entity;
 class ShaderSystem
 {
 public:
+
     ShaderSystem();
 
     void updateShaders(std::vector<Entity>* entities, CameraComponent* activeCamera);
@@ -28,6 +29,14 @@ public:
 private:
     std::unordered_map<int, Shader> loadedShaders;
     int nextShaderId;
+
+    struct ShaderBlocks {
+        UniformBlock cameraBlock;
+
+        ShaderBlocks();
+    };
+
+    ShaderBlocks shaderBlocks;
 };
 
 
