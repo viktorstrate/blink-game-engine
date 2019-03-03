@@ -30,7 +30,5 @@ public:
 
     glm::vec3 front(const TransformComponent* transform) const;
 
-    void configureShader(Shader& shader);
-
 };
 

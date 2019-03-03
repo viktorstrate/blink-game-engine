@@ -2,9 +2,10 @@
 // Created by Viktor Hundahl Strate on 09/02/2019.
 //
 
+#include "CameraComponent.h"
+
 #include "Entity.h"
 #include "TransformComponent.h"
-#include "CameraComponent.h"
 #include "graphics/Shader.h"
 
 #include <iostream>
@@ -46,16 +47,3 @@ glm::vec3 CameraComponent::front(const TransformComponent* transform) const
     return front;
 }
 
-void CameraComponent::configureShader(Shader& shader)
-{
-    glm::mat4 view = GetViewMatrix();
-    glm::mat4 projection = getProjectionMatrix();
-
-    auto* transform = entity->get<TransformComponent>();
-
-    shader.use();
-
-    shader.setMat4("view", view);
-    shader.setMat4("projection", projection);
-    shader.setVec3("viewPos", transform->position);
-}

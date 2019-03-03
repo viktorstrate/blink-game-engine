@@ -11,6 +11,7 @@
 
 #include "systems/DynamicSystem.h"
 #include "systems/ModelSystem.h"
+#include "systems/ShaderSystem.h"
 
 class CameraComponent;
 
@@ -31,11 +32,12 @@ public:
     Entity* getEntity(int id);
 
     DynamicSystem& getDynamicSystem();
-
     ModelSystem& getModelSystem();
+    ShaderSystem& getShaderSystem();
 
     CameraComponent* activeCamera;
     std::vector<Entity> entities;
+    std::vector<Shader> shaders;
     Game* game;
 
 protected:
@@ -44,5 +46,7 @@ protected:
 
     DynamicSystem dynamicSystem;
     ModelSystem modelSystem;
+    ShaderSystem shaderSystem;
+
 };
 

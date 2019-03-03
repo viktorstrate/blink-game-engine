@@ -9,10 +9,10 @@
 #include "ModelSystem.h"
 
 ModelSystem::ModelSystem()
-    : nextModelId(1), loadedModels(), loadedShaders(), nextShaderId(1)
+    : nextModelId(1), loadedModels()
 {}
 
-void ModelSystem::drawModels(World* world)
+void ModelSystem::drawModels(World* world, ShaderSystem* shaderSystem)
 {
     for (auto &item : world->entities) {
         if (!item.contains<ModelComponent, TransformComponent>()) continue;
@@ -21,15 +21,13 @@ void ModelSystem::drawModels(World* world)
 
         glm::mat4 model = modelComp->getModelMatrix();
 
-        auto& shader = loadedShaders[modelComp->getShaderId()];
+        auto* shader = shaderSystem->getShader(modelComp->getShaderId());
 
-        shader.use();
-
-        shader.setMat4("model", model);
-        world->activeCamera->configureShader(shader);
+        shader->use();
+        shader->setMat4("model", model);
 
         int id = modelComp->getModelId();
-        loadedModels[id].Draw(shader);
+        loadedModels[id].Draw(*shader);
     }
 }
 
@@ -42,20 +40,4 @@ int ModelSystem::loadModel(const std::string &path)
     loadedModels[id] = model;
 
     return id;
-}
-
-int ModelSystem::loadShader(const std::string& path)
-{
-    int id = nextShaderId++;
-
-    Shader shader(path);
-
-    loadedShaders[id] = shader;
-
-    return id;
-}
-
-Shader* ModelSystem::getShader(int id)
-{
-    return &loadedShaders[id];
 }

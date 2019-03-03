@@ -6,9 +6,9 @@
 #include "components/DynamicComponent.h"
 #include "DynamicSystem.h"
 
-void DynamicSystem::update(std::vector<Entity> &gameObjects, double dt)
+void DynamicSystem::update(std::vector<Entity> &entities, double dt)
 {
-    for (auto &item : gameObjects) {
+    for (auto &item : entities) {
         auto* component = item.get<DynamicComponent>();
         if (component != nullptr) {
             component->update(dt);

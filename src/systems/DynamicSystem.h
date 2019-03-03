@@ -12,7 +12,7 @@ class GLFWwindow;
 class DynamicSystem
 {
 public:
-    void update(std::vector<Entity> &gameObjects, double dt);
+    void update(std::vector<Entity> &entities, double dt);
     void fixedUpdate(std::vector<Entity> &entity);
 
     void processInput(std::vector<Entity> &entity, GLFWwindow* window, double dt);
