@@ -96,16 +96,13 @@ Shader::Shader(const std::string &shaderPath)
     }
 
     // delete the shaders as they're linked into our program now and no longer necessery
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-
-    int matrixBlock = glGetUniformBlockIndex(ID, "Matrices");
-    glUniformBlockBinding(ID, matrixBlock, 0);
+    glCall(glDeleteShader(vertex));
+    glCall(glDeleteShader(fragment));
 }
 
 void Shader::use()
 {
-    glUseProgram(ID);
+    glCall(glUseProgram(ID));
 }
 
 void Shader::setBool(const std::string &name, bool value) const
@@ -150,6 +147,9 @@ void Shader::setVec3(const std::string &name, glm::vec3 vector)
 
 void Shader::setUniformBlock(const std::string& name, UniformBlock& block)
 {
-    unsigned int blockIndex = glGetUniformBlockIndex(ID, name.c_str());
-    glUniformBlockBinding(ID, blockIndex, block.getBlockIndex());
+    glCall(unsigned int blockIndex = glGetUniformBlockIndex(ID, name.c_str()));
+    if (blockIndex == -1) {
+        std::cerr << "ERROR::SHADER::SET_UNIFORM_BLOCK: Name not found in shader: " << name << std::endl;
+    }
+    glCall(glUniformBlockBinding(ID, blockIndex, block.getBlockIndex()));
 }

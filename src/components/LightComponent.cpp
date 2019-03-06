@@ -2,7 +2,9 @@
 // Created by Viktor Hundahl Strate on 2019-03-03.
 //
 
+#include "Entity.h"
 #include "LightComponent.h"
+#include "TransformComponent.h"
 
 LightComponent::LightComponent() : type(DIRECTIONAL)
 {}
@@ -17,12 +19,13 @@ LightComponent::Type LightComponent::getType() const
 
 const glm::vec3& LightComponent::getPosition() const
 {
-    return position;
+    auto* transform = entity->get<TransformComponent>();
+    return transform->position;
 }
 
 const glm::vec3& LightComponent::getDirection() const
 {
-    return position;
+    return getPosition();
 }
 
 const glm::vec3& LightComponent::getAmbient() const
@@ -40,12 +43,55 @@ const glm::vec3& LightComponent::getSpecular() const
     return specular;
 }
 
+float LightComponent::getRange() const
+{
+    return range;
+}
+
 void LightComponent::setDirectional(const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse,
                                     const glm::vec3& specular)
 {
     this->type = DIRECTIONAL;
-    this->position = direction;
+    auto* transform = entity->get<TransformComponent>();
+    transform->position = direction;
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
+}
+
+void LightComponent::setPoint(const glm::vec3& position, float range,
+                              const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular)
+{
+    this->type = POINT;
+    auto* transform = entity->get<TransformComponent>();
+    transform->position = position;
+    this->range = range;
+    this->ambient = ambient;
+    this->diffuse = diffuse;
+    this->specular = specular;
+}
+
+void LightComponent::setType(LightComponent::Type type)
+{
+    LightComponent::type = type;
+}
+
+void LightComponent::setAmbient(const glm::vec3& ambient)
+{
+    LightComponent::ambient = ambient;
+}
+
+void LightComponent::setDiffuse(const glm::vec3& diffuse)
+{
+    LightComponent::diffuse = diffuse;
+}
+
+void LightComponent::setSpecular(const glm::vec3& specular)
+{
+    LightComponent::specular = specular;
+}
+
+void LightComponent::setRange(float range)
+{
+    LightComponent::range = range;
 }

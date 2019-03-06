@@ -21,7 +21,7 @@ UniformBlock::UniformBlock(size_t size, unsigned int blockIndex, GLenum usage) :
     glCall(glBufferData(GL_UNIFORM_BUFFER, size, nullptr, usage));
     glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
 
-    glCall(glBindBufferBase(GL_UNIFORM_BUFFER, blockIndex, bufferIndex));
+    glCall(glBindBufferRange(GL_UNIFORM_BUFFER, blockIndex, bufferIndex, 0, size));
 }
 
 void UniformBlock::use()

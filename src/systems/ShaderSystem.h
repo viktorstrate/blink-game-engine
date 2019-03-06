@@ -33,6 +33,7 @@ private:
     struct ShaderBlocks {
         UniformBlock cameraBlock;
         UniformBlock directionalLightsBlock;
+        UniformBlock pointLightsBlock;
 
         ShaderBlocks();
     };
